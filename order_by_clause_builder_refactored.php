@@ -17,14 +17,11 @@ function generate($hash, $included_columns)
                     $hashes[] = "{$included_columns[$column]} $direction";
                 }
             }
-            elseif (is_int($column))
+            else if (is_int($column))
             {
-                $colDir = "ASC";
-                if (substr($direction, 0, 1) == "-")
-                {
-                    $direction = substr($direction, 1);
-                    $colDir = "DESC";
-                }
+                $colDir    = str_starts_with($direction, '-') ? 'DESC' : 'ASC';
+                $columnKey = ltrim($direction, '-');
+
                 if (array_key_exists($direction, $included_columns))
                 {
                     $hashes[] = "{$included_columns[$direction]} $colDir";
