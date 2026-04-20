@@ -41,7 +41,7 @@ CREATE TABLE user_skills (
     user_skill_id            INT(11)      NOT NULL AUTO_INCREMENT,
     user_skill_last_modified TIMESTAMP    NULL,
     user_skill_date_created  DATETIME     NULL DEFAULT CURRENT_TIMESTAMP,
-    user_id                  INT(11)      NULL,
+    user_id                  INT(11)      NOT NULL,
     skill_name               CHAR(255)    NULL,
     skill_level              CHAR(255)    NULL,
     skill_usage              CHAR(255)    NULL,

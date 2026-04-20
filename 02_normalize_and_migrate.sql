@@ -49,6 +49,7 @@ SET us.skill_id = s.skill_id;
 -- STEP 5: Enforce NOT NULL and add the foreign key constraint
 -- =============================================================================
 ALTER TABLE user_skills
+    MODIFY COLUMN user_id INT(11) NOT NULL,
     MODIFY COLUMN skill_id INT(11) NOT NULL,
     ADD CONSTRAINT fk_user_skills_skill
         FOREIGN KEY (skill_id) REFERENCES skill(skill_id);
