@@ -18,7 +18,7 @@ Object.assign(ListenerCollection.prototype, {
     removeListener: function(listener)
     {
         var index = this.listeners.indexOf(listener);
-        if(index > 0)
+        if (index >= 0)
         {
             this.listeners.splice(index, 1);
         }
