@@ -6,7 +6,7 @@ Object.assign(ListenerCollection.prototype, {
     addListener: function(listener)
     {
         if(!angular.isFunction(listener)) return angular.noop;
-        if(this.listeners.includes(listener))
+        if (!this.listeners.includes(listener))
         {
             this.listeners.push(listener);
         }
