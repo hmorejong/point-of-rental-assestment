@@ -39,7 +39,7 @@ function generate($hash, $included_columns)
         }
         if(!empty($hashes))
         {
-            $query_string = " ORDER BY " . join(",", $hashes);
+            $query_string = " ORDER BY " . join(", ", $hashes);
         }
     }
     return $query_string;
