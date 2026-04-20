@@ -46,15 +46,12 @@ JOIN skill s ON s.skill_name = us.skill_name
 SET us.skill_id = s.skill_id;
 
 -- =============================================================================
--- STEP 5: Enforce NOT NULL and enforce both foreign key constraints
+-- STEP 5: Enforce NOT NULL and add post-normalization constraints
 -- =============================================================================
 ALTER TABLE user_skills
-    DROP FOREIGN KEY fk_user_skills_user,
     MODIFY COLUMN user_id INT(11) NOT NULL,
     MODIFY COLUMN skill_id INT(11) NOT NULL,
     ADD CONSTRAINT uq_user_skill UNIQUE (user_id, skill_id),
-    ADD CONSTRAINT fk_user_skills_user
-        FOREIGN KEY (user_id) REFERENCES user(user_id),
     ADD CONSTRAINT fk_user_skills_skill
         FOREIGN KEY (skill_id) REFERENCES skill(skill_id);
 
@@ -112,10 +109,10 @@ ALTER TABLE user_accounts
 -- =============================================================================
 EXPLAIN
 SELECT c.*
-FROM jobs AS j
-JOIN users AS u         ON u.userid    = j.userid
+FROM jobs  AS j
+JOIN users AS u          ON u.userid    = j.userid
 JOIN user_accounts AS ua ON ua.userid   = j.userid
-JOIN companies AS c     ON c.companyid = u.companyid
+JOIN companies AS c      ON c.companyid = u.companyid
 WHERE j.jobid = 1;
 
 -- =============================================================================
@@ -124,9 +121,9 @@ WHERE j.jobid = 1;
 -- Tables:
 --   user              — unchanged
 --   skill             — NEW: normalized skill name lookup
---   user_skills        — MODIFIED: skill_name replaced by skill_id (FK)
+--   user_skills       — MODIFIED: skill_name replaced by skill_id (FK)
 --   companies         — MODIFIED: indexes added
 --   users             — MODIFIED: indexes added
 --   jobs              — MODIFIED: indexes added
---   user_accounts      — MODIFIED: indexes added
+--   user_accounts     — MODIFIED: indexes added
 -- =============================================================================
