@@ -27,16 +27,19 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- =============================================================================
 -- TABLE: users
 -- Registered users of the system. Users can log in, manage their own contact
--- list, and appear as contacts for other users.
+-- list, appear as contacts for other users, and optionally block all users
+-- from adding them as a contact.
 -- =============================================================================
 CREATE TABLE users (
-    user_id         INT(11)         NOT NULL AUTO_INCREMENT,
-    email           VARCHAR(255)    NOT NULL,
-    password_hash   VARCHAR(255)    NOT NULL,
-    first_name      VARCHAR(100)    NULL,
-    last_name       VARCHAR(100)    NULL,
-    created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    user_id                 INT(11)         NOT NULL AUTO_INCREMENT,
+    email                   VARCHAR(255)    NOT NULL,
+    is_admin                TINYINT(1)      NOT NULL DEFAULT 0,
+    password_hash           VARCHAR(255)    NOT NULL,
+    first_name              VARCHAR(100)    NULL,
+    last_name               VARCHAR(100)    NULL,
+    block_all_contact_adds  TINYINT(1)      NOT NULL DEFAULT 0,
+    created_at              DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at              DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id),
     UNIQUE KEY uq_users_email (email)
 );
@@ -126,20 +129,19 @@ CREATE TABLE contact_postal_addresses (
 
 -- =============================================================================
 -- TABLE: contact_blocks
--- Controls who can add a given user as a contact.
---
--- Two modes:
---   blocker_user_id IS NULL     → the user has blocked ALL other users
---   blocker_user_id IS NOT NULL → the user has blocked only that specific user
+-- Stores user-specific block relationships.
 --
 -- Example:
---   blocked_user_id=5, blocker_user_id=NULL   → user 5 blocks everyone
---   blocked_user_id=5, blocker_user_id=12     → user 5 blocks only user 12
+--   blocked_user_id = 5, blocker_user_id = 12
+--   → user 5 blocks user 12 from adding them as a contact
+--
+-- Global "block all users" behavior is stored separately on users via
+-- block_all_contact_adds.
 -- =============================================================================
 CREATE TABLE contact_blocks (
     block_id            INT(11)     NOT NULL AUTO_INCREMENT,
     blocked_user_id     INT(11)     NOT NULL,
-    blocker_user_id     INT(11)     NULL,
+    blocker_user_id     INT(11)     NOT NULL,
     created_at          DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (block_id),
     CONSTRAINT fk_blocks_blocked_user
@@ -157,10 +159,23 @@ CREATE TABLE contact_blocks (
 -- SEED DATA: a few users and contacts to verify relationships in the ERD
 -- =============================================================================
 
-INSERT INTO users (email, password_hash, first_name, last_name) VALUES
-    ('alice@example.com', 'hashed_pw_1', 'Alice', 'Johnson'),
-    ('bob@example.com',   'hashed_pw_2', 'Bob',   'Smith'),
-    ('carol@example.com', 'hashed_pw_3', 'Carol', 'Williams');
+INSERT INTO users (
+    email,
+    password_hash,
+    first_name,
+    last_name,
+    block_all_contact_adds
+) VALUES
+    ('alice@example.com', 'hashed_pw_1', 'Alice', 'Johnson', 0),
+    ('bob@example.com',   'hashed_pw_2', 'Bob',   'Smith',   1),
+    ('carol@example.com', 'hashed_pw_3', 'Carol', 'Williams', 0);
+
+-- Carol blocks Alice from adding her as a contact
+INSERT INTO contact_blocks (blocked_user_id, blocker_user_id) VALUES
+    (3, 1);
+
+-- Bob blocks all users from adding him as a contact
+-- This is represented by users.block_all_contact_adds = 1
 
 -- Alice adds Bob (a registered user) and an external contact
 INSERT INTO contacts (owner_user_id, linked_user_id, first_name, last_name, note) VALUES
@@ -199,14 +214,6 @@ INSERT INTO contact_postal_addresses (
 ) VALUES
     (1, 'home',     '123 Main St',    NULL, 'Cape Coral', 'FL', '33904', 'US'),
     (2, 'business', '456 Market Ave', NULL, 'Miami',      'FL', '33101', 'US');
-
--- Carol blocks Alice from adding her as a contact
-INSERT INTO contact_blocks (blocked_user_id, blocker_user_id) VALUES
-    (3, 1);
-
--- Bob blocks all users from adding him
-INSERT INTO contact_blocks (blocked_user_id, blocker_user_id) VALUES
-    (2, NULL);
 
 -- =============================================================================
 -- VERIFY: Show all contacts with their owner and linked user info
