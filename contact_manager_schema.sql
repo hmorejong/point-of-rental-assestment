@@ -111,7 +111,8 @@ CREATE TABLE contact_postal_addresses (
     address_id      INT(11)         NOT NULL AUTO_INCREMENT,
     contact_id      INT(11)         NOT NULL,
     address_type    VARCHAR(50)     NOT NULL DEFAULT 'home',
-    street          VARCHAR(255)    NULL,
+    street_line_1   VARCHAR(255)    NULL,
+    street_line_2   VARCHAR(255)    NULL,
     city            VARCHAR(100)    NULL,
     state           VARCHAR(100)    NULL,
     postal_code     VARCHAR(20)     NULL,
@@ -186,9 +187,18 @@ INSERT INTO contact_email_addresses (contact_id, email_address) VALUES
     (2, 'jane.doe@supplier.com');
 
 -- Postal addresses
-INSERT INTO contact_postal_addresses (contact_id, address_type, street, city, state, postal_code, country) VALUES
-    (1, 'home',     '123 Main St',    'Cape Coral', 'FL', '33904', 'US'),
-    (2, 'business', '456 Market Ave', 'Miami',      'FL', '33101', 'US');
+INSERT INTO contact_postal_addresses (
+    contact_id,
+    address_type,
+    street_line_1,
+    street_line_2,
+    city,
+    state,
+    postal_code,
+    country
+) VALUES
+    (1, 'home',     '123 Main St',    NULL, 'Cape Coral', 'FL', '33904', 'US'),
+    (2, 'business', '456 Market Ave', NULL, 'Miami',      'FL', '33101', 'US');
 
 -- Carol blocks Alice from adding her as a contact
 INSERT INTO contact_blocks (blocked_user_id, blocker_user_id) VALUES
