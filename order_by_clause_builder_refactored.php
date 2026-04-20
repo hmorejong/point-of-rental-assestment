@@ -24,7 +24,7 @@ function generate($hash, $included_columns)
 
                 if (array_key_exists($columnKey, $included_columns))
                 {
-                    $hashes[] = "{$included_columns[$direction]} $colDir";
+                    $hashes[] = "{$included_columns[$columnKey]} $colDir";
                 }
             }
             else
