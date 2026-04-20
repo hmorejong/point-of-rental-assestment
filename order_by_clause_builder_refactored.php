@@ -1,13 +1,13 @@
 <?php
 
-function generate($hash, $included_columns) : string
+function generate(array $sort_criteria, array $included_columns): string
 {
     $query_string = '';
     $hashes       = [];
 
-    if (!empty($hash))
+    if (!empty($sort_criteria))
     {
-        foreach ($hash as $column => $direction)
+        foreach ($sort_criteria as $column => $direction)
         {
             $direction = strtoupper($direction);
 
