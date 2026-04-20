@@ -64,7 +64,8 @@ CREATE TABLE contacts (
         FOREIGN KEY (linked_user_id) REFERENCES users(user_id)
         ON DELETE SET NULL,
     INDEX idx_contacts_owner_user_id (owner_user_id),
-    INDEX idx_contacts_linked_user_id (linked_user_id)
+    INDEX idx_contacts_linked_user_id (linked_user_id),
+    UNIQUE KEY uq_contacts_owner_linked_user (owner_user_id, linked_user_id)
 );
 
 -- =============================================================================
