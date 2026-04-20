@@ -22,7 +22,7 @@ function generate($hash, $included_columns)
                 $colDir    = str_starts_with($direction, '-') ? 'DESC' : 'ASC';
                 $columnKey = ltrim($direction, '-');
 
-                if (array_key_exists($direction, $included_columns))
+                if (array_key_exists($columnKey, $included_columns))
                 {
                     $hashes[] = "{$included_columns[$direction]} $colDir";
                 }
