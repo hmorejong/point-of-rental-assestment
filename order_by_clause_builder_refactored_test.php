@@ -33,7 +33,7 @@ function print_test_separator(): void
 
 $passed = 0;
 $failed = 0;
-$total  = 6;
+$total  = 8;
 $testResults = [];
 
 echo "========================================\n";
@@ -123,13 +123,32 @@ catch (\Throwable $e)
     $failed++;
 }
 
+print_test_separator();
+
+// Test 7: Associative format with lowercase directions is normalized and valid
+$sort_criteria7 = ['CreatedDate' => 'asc', 'FieldValue' => 'desc'];
+$expected7      = ' ORDER BY CreatedDate ASC, JoinedTable.FieldValue DESC';
+$actual7        = generate($sort_criteria7, $included_columns);
+$testResults[7] = print_test_result(7, 'associative format is valid and normalized', $actual7, $expected7);
+$testResults[7] ? $passed++ : $failed++;
+print_test_separator();
+
+// Test 8: Shorthand + associative combined remains valid in order
+$sort_criteria8 = ['-Method', 'TableId' => 'DESC', 'CreatedDate'];
+$expected8      = ' ORDER BY OrderType.Method DESC, TableId DESC, CreatedDate ASC';
+$actual8        = generate($sort_criteria8, $included_columns);
+$testResults[8] = print_test_result(8, 'mixed shorthand and associative are both valid', $actual8, $expected8);
+$testResults[8] ? $passed++ : $failed++;
+
 $expectedResults = [
-    1 => false,
+    1 => true,
     2 => true,
-    3 => false,
+    3 => true,
     4 => true,
     5 => true,
-    6 => true
+    6 => true,
+    7 => true,
+    8 => true
 ];
 
 $unexpectedOutcomes = 0;
