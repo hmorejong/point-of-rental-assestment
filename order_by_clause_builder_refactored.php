@@ -14,7 +14,7 @@ function generate($hash, $included_columns)
             {
                 if (array_key_exists($column, $included_columns))
                 {
-                    $hashes[] = "$included_columns[$column] $direction";
+                    $hashes[] = "{$included_columns[$column]} $direction";
                 }
             }
             elseif (is_int($column))
@@ -27,7 +27,7 @@ function generate($hash, $included_columns)
                 }
                 if (array_key_exists($direction, $included_columns))
                 {
-                    $hashes[] = "{$included_columns[$direction]} $colDir ";
+                    $hashes[] = "{$included_columns[$direction]} $colDir";
                 }
             }
             else
