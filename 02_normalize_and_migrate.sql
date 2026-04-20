@@ -46,11 +46,14 @@ JOIN skill s ON s.skill_name = us.skill_name
 SET us.skill_id = s.skill_id;
 
 -- =============================================================================
--- STEP 5: Enforce NOT NULL and add the foreign key constraint
+-- STEP 5: Enforce NOT NULL and enforce both foreign key constraints
 -- =============================================================================
 ALTER TABLE user_skills
+    DROP FOREIGN KEY fk_user_skills_user,
     MODIFY COLUMN user_id INT(11) NOT NULL,
     MODIFY COLUMN skill_id INT(11) NOT NULL,
+    ADD CONSTRAINT fk_user_skills_user
+        FOREIGN KEY (user_id) REFERENCES user(user_id),
     ADD CONSTRAINT fk_user_skills_skill
         FOREIGN KEY (skill_id) REFERENCES skill(skill_id);
 
