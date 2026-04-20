@@ -11,12 +11,9 @@ function generate($hash, $included_columns)
         {
             if (in_array($direction, ['ASC', 'DESC']))
             {
-                foreach($included_columns as $columnName => $columnValue)
+                if (array_key_exists($column, $included_columns))
                 {
-                    if ($column == $columnName)
-                    {
-                        $hashes[] = "$columnValue $direction ";
-                    }
+                    $hashes[] = "$included_columns[$column] $direction";
                 }
             }
             elseif (is_int($column))
