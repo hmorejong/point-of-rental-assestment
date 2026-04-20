@@ -1,11 +1,11 @@
 <?php
 
-
 function generate($hash, $included_columns)
 {
     $query_string = "";
-    $hashes = [];
-    if (!empty($hashTable))
+    $hashes       = [];
+
+    if (!empty($hash))
     {
         foreach ($hash as $column => $direction)
         {
