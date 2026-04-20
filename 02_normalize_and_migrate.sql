@@ -52,6 +52,7 @@ ALTER TABLE user_skills
     DROP FOREIGN KEY fk_user_skills_user,
     MODIFY COLUMN user_id INT(11) NOT NULL,
     MODIFY COLUMN skill_id INT(11) NOT NULL,
+    ADD CONSTRAINT uq_user_skill UNIQUE (user_id, skill_id),
     ADD CONSTRAINT fk_user_skills_user
         FOREIGN KEY (user_id) REFERENCES user(user_id),
     ADD CONSTRAINT fk_user_skills_skill
