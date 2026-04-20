@@ -97,7 +97,8 @@ CREATE TABLE contact_email_addresses (
     CONSTRAINT fk_email_addresses_contact
         FOREIGN KEY (contact_id) REFERENCES contacts(contact_id)
         ON DELETE CASCADE,
-    INDEX idx_email_addresses_contact_id (contact_id)
+    INDEX idx_email_addresses_contact_id (contact_id),
+    UNIQUE KEY uq_contact_email (contact_id, email_address)
 );
 
 -- =============================================================================
