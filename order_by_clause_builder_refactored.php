@@ -25,17 +25,13 @@ function generate(array $sort_criteria, array $included_columns): string
     {
         foreach ($sort_criteria as $column => $direction)
         {
-            $direction = strtoupper($direction);
-
-            if (in_array($direction, ['ASC', 'DESC'], true))
+            if (is_int($column))
             {
-                if (array_key_exists($column, $included_columns))
+                if (!is_string($direction))
                 {
-                    $hashes[] = "{$included_columns[$column]} $direction";
+                    throw new \InvalidArgumentException("Invalid criteria: $column");
                 }
-            }
-            else if (is_int($column))
-            {
+
                 $colDir    = str_starts_with($direction, '-') ? 'DESC' : 'ASC';
                 $columnKey = ltrim($direction, '-');
 
@@ -44,9 +40,23 @@ function generate(array $sort_criteria, array $included_columns): string
                     $hashes[] = "{$included_columns[$columnKey]} $colDir";
                 }
             }
+            elseif (is_string($direction))
+            {
+                $normalizedDirection = strtoupper($direction);
+
+                if (!in_array($normalizedDirection, ['ASC', 'DESC'], true))
+                {
+                    throw new \InvalidArgumentException("Invalid criteria: $column $normalizedDirection");
+                }
+
+                if (array_key_exists($column, $included_columns))
+                {
+                    $hashes[] = "{$included_columns[$column]} $normalizedDirection";
+                }
+            }
             else
             {
-                throw new \InvalidArgumentException("Invalid criteria: $column $direction");
+                throw new \InvalidArgumentException("Invalid criteria: $column");
             }
         }
         
