@@ -1,8 +1,8 @@
 <?php
 
-function generate($hash, $included_columns)
+function generate($hash, $included_columns) : string
 {
-    $query_string = "";
+    $query_string = '';
     $hashes       = [];
 
     if (!empty($hash))
@@ -10,6 +10,7 @@ function generate($hash, $included_columns)
         foreach ($hash as $column => $direction)
         {
             $direction = strtoupper($direction);
+
             if (in_array($direction, ['ASC', 'DESC'], true))
             {
                 if (array_key_exists($column, $included_columns))
@@ -32,10 +33,12 @@ function generate($hash, $included_columns)
                 throw new \Exception("Invalid criteria: $column $direction");
             }
         }
-        if(!empty($hashes))
+        
+        if (!empty($hashes))
         {
             $query_string = " ORDER BY " . join(", ", $hashes);
         }
     }
+
     return $query_string;
 }
