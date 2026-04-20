@@ -82,7 +82,8 @@ CREATE TABLE contact_phone_numbers (
     CONSTRAINT fk_phone_numbers_contact
         FOREIGN KEY (contact_id) REFERENCES contacts(contact_id)
         ON DELETE CASCADE,
-    INDEX idx_phone_numbers_contact_id (contact_id)
+    INDEX idx_phone_numbers_contact_id (contact_id),
+    UNIQUE KEY uq_contact_phone (contact_id, phone_type, phone_number)
 );
 
 -- =============================================================================
