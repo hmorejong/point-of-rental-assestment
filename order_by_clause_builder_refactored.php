@@ -9,7 +9,8 @@ function generate($hash, $included_columns)
     {
         foreach ($hash as $column => $direction)
         {
-            if (in_array($direction, ['ASC', 'DESC']))
+            $direction = strtoupper($direction);
+            if (in_array($direction, ['ASC', 'DESC'], true))
             {
                 if (array_key_exists($column, $included_columns))
                 {
