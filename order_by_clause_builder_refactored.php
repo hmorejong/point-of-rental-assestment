@@ -30,7 +30,7 @@ function generate($hash, $included_columns) : string
             }
             else
             {
-                throw new \Exception("Invalid criteria: $column $direction");
+                throw new \InvalidArgumentException("Invalid criteria: $column $direction");
             }
         }
         
