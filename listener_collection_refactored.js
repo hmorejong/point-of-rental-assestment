@@ -2,16 +2,18 @@ function ListenerCollection(listeners)
 {
     this.listeners = listeners;
 }
+
 Object.assign(ListenerCollection.prototype, {
     addListener: function(listener)
     {
-        if(!angular.isFunction(listener)) return angular.noop;
+        if (!angular.isFunction(listener)) return angular.noop;
         if (!this.listeners.includes(listener))
         {
             this.listeners.push(listener);
         }
         var self = this;
-        return function(){
+        
+        return function() {
             self.removeListener(listener);
         };
     },
@@ -33,12 +35,14 @@ Object.assign(ListenerCollection.prototype, {
     },
     trigger: function()
     {
-        var args = Array.prototype.slice.call(arguments);
+        var args     = Array.prototype.slice.call(arguments);
         var promises = [];
+
         for(var i = 0; i < this.listeners.length; i++)
         {
             promises.push(this.listeners[i].apply(this.listeners[i], args));
         }
+
         return Promise.all(promises);
     }
 });
