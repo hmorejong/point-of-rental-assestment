@@ -2,11 +2,9 @@
 
 Assessment workspace including database design (ERD + SQL), and refactoring exercises in PHP and JavaScript.
 
----
-
 ## Project Files
 
-### `01_original_schema.sql`
+### 🛢️ `01_original_schema.sql`
 
 - Baseline SQL script for the assessment's original (pre-normalized) model.
 - Creates and seeds the `por_assessment` database with:
@@ -17,7 +15,7 @@ Assessment workspace including database design (ERD + SQL), and refactoring exer
 
 ---
 
-### `02_normalize_and_migrate.sql`
+### 🛢️ `02_normalize_and_migrate.sql`
 
 - Follow-up migration script (run after `01_original_schema.sql`).
 - Normalizes `skill_name` into a separate `skill` lookup table and backfills `user_skills.skill_id`.
@@ -29,7 +27,7 @@ Assessment workspace including database design (ERD + SQL), and refactoring exer
 
 ---
 
-### `contact_manager_schema.sql`
+### 🛢️ `contact_manager_schema.sql`
 
 - MySQL schema for a contact manager system.
 - Includes tables, foreign keys, indexes, constraints, and seed data.
@@ -37,7 +35,7 @@ Assessment workspace including database design (ERD + SQL), and refactoring exer
 
 ---
 
-### `order_by_clause_builder_refactored.php`
+### 🐘 `order_by_clause_builder_refactored.php`
 
 - PHP function `generate()` that builds an SQL `ORDER BY` clause.
 - Supports two input formats:
@@ -47,7 +45,7 @@ Assessment workspace including database design (ERD + SQL), and refactoring exer
 
 ---
 
-### `order_by_clause_builder_refactored_test.php`
+### 🐘 `order_by_clause_builder_refactored_test.php`
 
 - Standalone CLI test runner for the PHP implementation.
 - Covers:
@@ -59,7 +57,7 @@ Assessment workspace including database design (ERD + SQL), and refactoring exer
 
 ---
 
-### `listener_collection_refactored.js`
+### 🟨 `listener_collection_refactored.js`
 
 - AngularJS-style listener manager implemented using the prototype pattern.
 - Supports:
@@ -71,7 +69,7 @@ Assessment workspace including database design (ERD + SQL), and refactoring exer
 
 ---
 
-### `listener_collection_refactored_test.js`
+### 🟨 `listener_collection_refactored_test.js`
 
 - Standalone Node test runner for the listener collection implementation.
 - Uses a minimal `angular` stub to simulate AngularJS behavior outside the browser.
@@ -131,4 +129,4 @@ Requires PHP 8.0 or later (uses `str_starts_with`).
 node listener_collection_refactored_test.js
 ```
 
-Runs standalone under Node; the test file provides a minimal `angular` stub, so no AngularJS or browser environment is required.
+Runs standalone under Node, the test file provides a minimal `angular` stub, so no AngularJS or browser environment is required.
